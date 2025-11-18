@@ -1,0 +1,40 @@
+{
+  "buildings": [
+    {
+      "id": 1,
+      "name": "Amphitheatre",
+      "department": "Events & Performance",
+      "coordinates": [6.8908778, 3.7224233],
+      "description": "Main amphitheatre for events, performances, and gatherings",
+      "hours": "8:00 AM - 6:00 PM",
+      "rooms": ["Stage", "Seating Area"]
+    },
+    {
+      "id": 2,
+      "name": "Main Gate",
+      "department": "Campus Entrance",
+      "coordinates": [6.8890757, 3.7200411],
+      "description": "Main entrance to Babcock University campus",
+      "hours": "24/7",
+      "rooms": ["Gatehouse", "Security Post"]
+    },
+    {
+      "id": 3,
+      "name": "Babcock Guest House",
+      "department": "Accommodation",
+      "coordinates": [6.8905112, 3.7199223],
+      "description": "Guest accommodation for visitors and official guests",
+      "hours": "24/7",
+      "rooms": ["Guest Rooms", "Reception", "Lounge"]
+    },
+    {
+      "id": 4,
+      "name": "Topaz Hall",
+      "department": "Housing",
+      "coordinates": [6.8934622, 3.7206117],
+      "description": "Student hostel and residential facility",
+      "hours": "24/7",
+      "rooms": ["Student Rooms", "Common Room", "Kitchen"]
+    }
+  ]
+}
