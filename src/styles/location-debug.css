@@ -1,0 +1,168 @@
+/* Location Debug Panel */
+.location-debug-panel {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 900;
+  max-width: 320px;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.location-debug-panel.inactive {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.debug-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.debug-header h4 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.tracking {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.idle {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.debug-content {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.debug-row .label {
+  color: #6b7280;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.debug-row .value {
+  color: #1f2937;
+  font-weight: 600;
+  text-align: right;
+  flex: 1;
+  word-break: break-all;
+}
+
+.debug-row .value.mono {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.8rem;
+}
+
+.debug-row .value.good {
+  color: #059669;
+}
+
+.debug-row .value.poor {
+  color: #dc2626;
+}
+
+.debug-hint {
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 6px;
+  border-left: 3px solid #2b6cb0;
+  font-size: 0.8rem;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.debug-hint strong {
+  color: #1f2937;
+}
+
+.debug-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.copy-btn,
+.maps-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #f3f4f6;
+  color: #1f2937;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover,
+.maps-btn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.copy-btn:active {
+  background: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .location-debug-panel {
+    top: 70px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+
+  .debug-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .debug-row .value {
+    text-align: left;
+  }
+}

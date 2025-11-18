@@ -1,0 +1,364 @@
+{
+  "buildings": [
+    {
+      "id": 1,
+      "name": "Bursary",
+      "department": "Government Office",
+      "coordinates": [6.8901032, 3.7228895],
+      "description": "University bursary and financial administration office",
+      "hours": "8:00 AM - 5:00 PM",
+      "rooms": ["Finance Office", "Admin Desk"]
+    },
+    {
+      "id": 2,
+      "name": "Senate Building",
+      "department": "Administration",
+      "coordinates": [6.8888398, 3.7218848],
+      "description": "Central administrative building for university governance",
+      "hours": "8:00 AM - 5:00 PM",
+      "rooms": ["Senate Chambers", "Offices", "Conference Room"]
+    },
+    {
+      "id": 3,
+      "name": "Andrews Park",
+      "department": "Recreation",
+      "coordinates": [6.887897, 3.721514],
+      "description": "Outdoor park and relaxation area on campus",
+      "hours": "24/7",
+      "rooms": ["Open Field", "Sitting Area"]
+    },
+    {
+      "id": 4,
+      "name": "Emerald Hall",
+      "department": "Housing",
+      "coordinates": [6.8937019, 3.7199852],
+      "description": "Student hostel facility",
+      "hours": "24/7",
+      "rooms": ["Student Rooms", "Common Area"]
+    },
+    {
+      "id": 5,
+      "name": "Adeleke Hall",
+      "department": "Housing",
+      "coordinates": [6.8928003, 3.7211487],
+      "description": "Student residential hall",
+      "hours": "24/7",
+      "rooms": ["Student Rooms", "Lounge"]
+    },
+    {
+      "id": 6,
+      "name": "Nelson Mandela Hall",
+      "department": "Housing",
+      "coordinates": [6.8934727, 3.7230408],
+      "description": "Student hostel named after Nelson Mandela",
+      "hours": "24/7",
+      "rooms": ["Student Rooms", "Common Room"]
+    },
+    {
+      "id": 7,
+      "name": "Gideon Troopers Hall",
+      "department": "Housing",
+      "coordinates": [6.8944243, 3.7224928],
+      "description": "Student hostel facility",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 8,
+      "name": "Bethel Splendor Hall",
+      "department": "Housing",
+      "coordinates": [6.8946086, 3.7230729],
+      "description": "Residential student building",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 9,
+      "name": "Samuel Akande Hall",
+      "department": "Housing",
+      "coordinates": [6.8941305, 3.7236374],
+      "description": "Student accommodation block",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 10,
+      "name": "Ameyo Adadevoh Hall",
+      "department": "Housing",
+      "coordinates": [6.8949448, 3.7249274],
+      "description": "Student hostel named after Dr. Ameyo Adadevoh",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 11,
+      "name": "Havilah Gold Hall",
+      "department": "Housing",
+      "coordinates": [6.8948787, 3.7260748],
+      "description": "Student hostel facility",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 12,
+      "name": "White Hall",
+      "department": "Housing",
+      "coordinates": [6.8937701, 3.7263304],
+      "description": "Student residential hall",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 13,
+      "name": "Felicia Adebisi Dada Hall",
+      "department": "Housing",
+      "coordinates": [6.8936738, 3.7249784],
+      "description": "Female student hostel",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 14,
+      "name": "Queen Esther Hall",
+      "department": "Housing",
+      "coordinates": [6.8929791, 3.7247012],
+      "description": "Female students hostel",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 15,
+      "name": "Nyberg Hall",
+      "department": "Housing",
+      "coordinates": [6.8925971, 3.7253785],
+      "description": "Student accommodation building",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 16,
+      "name": "Ogden Hall",
+      "department": "Housing",
+      "coordinates": [6.8928285, 3.726381],
+      "description": "Student housing facility",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 17,
+      "name": "Diamond Hall",
+      "department": "Housing",
+      "coordinates": [6.892117, 3.7271929],
+      "description": "Student hostel",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 18,
+      "name": "Platinum Hall",
+      "department": "Housing",
+      "coordinates": [6.8924519, 3.7274199],
+      "description": "Student residential hall",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 19,
+      "name": "Crystal Hall",
+      "department": "Housing",
+      "coordinates": [6.8928556, 3.7277415],
+      "description": "Student hostel building",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 20,
+      "name": "Basketball Court BU",
+      "department": "Sports",
+      "coordinates": [6.8939333, 3.7284146],
+      "description": "Outdoor basketball court",
+      "hours": "6:00 AM - 10:00 PM",
+      "rooms": ["Court"]
+    },
+    {
+      "id": 21,
+      "name": "Stadium Babcock University",
+      "department": "Sports",
+      "coordinates": [6.8947221, 3.7277028],
+      "description": "University sports stadium",
+      "hours": "6:00 AM - 10:00 PM",
+      "rooms": ["Field", "Stands"]
+    },
+    {
+      "id": 22,
+      "name": "Laz Otti Library",
+      "department": "Academics",
+      "coordinates": [6.8921563, 3.7223333],
+      "description": "Main university library",
+      "hours": "8:00 AM - 10:00 PM",
+      "rooms": ["Reading Rooms", "Study Rooms"]
+    },
+    {
+      "id": 23,
+      "name": "School Cafeteria",
+      "department": "Dining",
+      "coordinates": [6.8926805, 3.7236058],
+      "description": "Student cafeteria and food service area",
+      "hours": "7:00 AM - 9:00 PM",
+      "rooms": ["Dining Hall", "Kitchen"]
+    },
+    {
+      "id": 24,
+      "name": "BUSA House",
+      "department": "Student Union",
+      "coordinates": [6.8920535, 3.7237593],
+      "description": "BUSA administrative building and student services",
+      "hours": "8:00 AM - 6:00 PM",
+      "rooms": ["Office", "Meeting Room"]
+    },
+    {
+      "id": 25,
+      "name": "BBS Babcock Business School",
+      "department": "Academics",
+      "coordinates": [6.890815, 3.7239076],
+      "description": "Business school academic building",
+      "hours": "8:00 AM - 6:00 PM",
+      "rooms": ["Lecture Rooms", "Offices"]
+    },
+    {
+      "id": 26,
+      "name": "New Horizon",
+      "department": "IT & Training",
+      "coordinates": [6.8903438, 3.723179],
+      "description": "IT training and certification center",
+      "hours": "8:00 AM - 5:00 PM",
+      "rooms": ["Computer Labs"]
+    },
+    {
+      "id": 27,
+      "name": "Science and Technology",
+      "department": "Academics",
+      "coordinates": [6.8887163, 3.7225462],
+      "description": "School of Science and Technology academic building",
+      "hours": "8:00 AM - 6:00 PM",
+      "rooms": ["Laboratories", "Lecture Rooms"]
+    },
+    {
+      "id": 28,
+      "name": "Amphitheatre",
+      "department": "Events & Performance",
+      "coordinates": [6.8908778, 3.7224233],
+      "description": "Main amphitheatre for events and school programs",
+      "hours": "8:00 AM - 6:00 PM",
+      "rooms": ["Stage", "Seating Area"]
+    },
+    {
+      "id": 29,
+      "name": "BU Mall",
+      "department": "Commercial",
+      "coordinates": [6.8912348, 3.7204419],
+      "description": "Campus shopping mall with stores and services",
+      "hours": "8:00 AM - 9:00 PM",
+      "rooms": ["Shops"]
+    },
+    {
+      "id": 30,
+      "name": "Banks Cluster",
+      "department": "Financial Services",
+      "coordinates": [6.8907987, 3.7207362],
+      "description": "Cluster of banks serving campus community",
+      "hours": "8:00 AM - 4:00 PM",
+      "rooms": ["ATM", "Banking Halls"]
+    },
+    {
+      "id": 31,
+      "name": "BU Highschool",
+      "department": "Academics",
+      "coordinates": [6.8901123, 3.7189709],
+      "description": "Babcock University High School",
+      "hours": "8:00 AM - 4:00 PM",
+      "rooms": ["Classrooms"]
+    },
+    {
+      "id": 32,
+      "name": "Seventh Day Adventist Church",
+      "department": "Worship",
+      "coordinates": [6.8896079, 3.7195952],
+      "description": "Main SDA church on campus",
+      "hours": "6:00 AM - 9:00 PM",
+      "rooms": ["Sanctuary", "Offices"]
+    },
+    {
+      "id": 33,
+      "name": "Winslow Hall",
+      "department": "Housing",
+      "coordinates": [6.8940085, 3.7216602],
+      "description": "Student residential hall",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+      "id": 34,
+      "name": "Neal Wilson Hall",
+      "department": "Housing",
+      "coordinates": [6.8930534, 3.7217164],
+      "description": "Student housing facility",
+      "hours": "24/7",
+      "rooms": ["Student Rooms"]
+    },
+    {
+  "id": 35,
+  "name": "BUTH (Babcock University Teaching Hospital)",
+  "department": "Healthcare",
+  "coordinates": [6.891753, 3.718582],
+  "description": "Primary teaching hospital providing medical services, clinical training, and specialized healthcare.",
+  "hours": "24/7",
+  "rooms": ["Emergency Ward", "Outpatient Clinics", "Inpatient Wards", "Laboratories", "Pharmacy"]
+},
+  {
+  "id": 36,
+  "name": "BuCodel",
+  "department": "E-Learning & Digital Education",
+  "coordinates": [6.891644, 3.723365],
+  "description": "Digital learning center and class venue equipped for e-learning, virtual classrooms, and technology-enhanced instruction.",
+  "hours": "8:00 AM - 6:00 PM",
+  "rooms": ["Computer Labs", "Virtual Classrooms", "Training Rooms"]
+},
+  {
+  "id": 37,
+  "name": "Academic Building",
+  "department": "Academics",
+  "coordinates": [6.891433, 3.722997],
+  "description": "Major academic building with multiple lecture rooms, classrooms, and teaching facilities.",
+  "hours": "8:00 AM - 6:00 PM",
+  "rooms": ["Lecture Rooms", "Classrooms", "Offices"]
+},
+{
+  "id": 38,
+  "name": "Main Gate",
+  "department": "Campus Entrance",
+  "coordinates": [6.8890757, 3.7200411],
+  "description": "Primary entrance to Babcock University with visitor access control and security operations.",
+  "hours": "24/7",
+  "rooms": ["Gatehouse", "Security Post"]
+},
+{
+  "id": 39,
+  "name": "Topaz Hall",
+  "department": "Housing",
+  "coordinates": [6.8934622, 3.7206117],
+  "description": "Student hostel and residential building housing undergraduate students.",
+  "hours": "24/7",
+  "rooms": ["Student Rooms", "Common Room", "Kitchen"]
+},
+{
+  "id": 40,
+  "name": "Babcock Guest House",
+  "department": "Accommodation",
+  "coordinates": [6.8905112, 3.7199223],
+  "description": "Guest accommodation facility for visitors, parents, conference guests, and university partners.",
+  "hours": "24/7",
+  "rooms": ["Guest Rooms", "Reception", "Lounge"]
+}
+  ]
+}
