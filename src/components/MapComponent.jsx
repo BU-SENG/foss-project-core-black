@@ -12,8 +12,6 @@ const MapComponent = ({
   focusBuilding,
   isOnJourney,
   journeyDestination,
-  userLocation,
-  isTracking = false,
 }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -23,8 +21,12 @@ const MapComponent = ({
   const userMarkerRef = useRef(null);
   const accuracyCircleRef = useRef(null);
   const headingMarkerRef = useRef(null);
-  const destinationMarkerRef = useRef(null);
   const [routingLoaded, setRoutingLoaded] = useState(false);
+  const [trackingActive, setTrackingActive] = useState(false);
+  const [watchId, setWatchId] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [currentRouteDest, setCurrentRouteDest] = useState(null);
+  const [lastTrackedPos, setLastTrackedPos] = useState(null);
 
   // Dynamically load Leaflet Routing Machine
   useEffect(() => {
@@ -79,7 +81,7 @@ const MapComponent = ({
         document.getElementById('map')?.classList.add('map-loaded');
       }, 200);
     }
-  }, []); // only on mount during darkMode init
+  }, []); // only on mount
 
   // Respond to darkMode changes by swapping tile layer
   useEffect(() => {
@@ -93,8 +95,8 @@ const MapComponent = ({
     if (tileLayerRef.current) {
       try {
         map.removeLayer(tileLayerRef.current);
-      } catch (err) {
-        console.warn('Error removing tile layer', err);
+      } catch (e) {
+        // ignore
       }
     }
 
@@ -113,18 +115,46 @@ const MapComponent = ({
 
     const map = mapInstanceRef.current;
 
-    // Remove old building markers
     Object.values(markersRef.current).forEach((m) => map.removeLayer(m));
     markersRef.current = {};
 
-    // Render buildings as simple, subtle circle markers (no pin)
     buildings.forEach((building) => {
-      const marker = L.circleMarker(building.coordinates, {
-        radius: 6,
-        color: '#6b7280',
-        fillColor: '#ffffff',
-        fillOpacity: 0.9,
-        weight: 1,
+      const isHighlighted = markers.includes(building.id);
+      const isDestination = isHighlighted;
+      
+      // Create SVG pin markers
+      const markerEl = document.createElement("div");
+      
+      if (isDestination) {
+        // Red destination pin
+        markerEl.innerHTML = `
+          <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="18" r="6" fill="#ef4444"/>
+            <path d="M 20 40 L 14 24 L 26 24 Z" fill="#ef4444"/>
+            <circle cx="20" cy="18" r="3" fill="white"/>
+          </svg>
+        `;
+        markerEl.className = "pin-marker-red";
+      } else {
+        // Blue regular pin
+        markerEl.innerHTML = `
+          <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="18" r="6" fill="#3b82f6"/>
+            <path d="M 20 40 L 14 24 L 26 24 Z" fill="#3b82f6"/>
+            <circle cx="20" cy="18" r="3" fill="white"/>
+          </svg>
+        `;
+        markerEl.className = "pin-marker-blue";
+      }
+
+      const marker = L.marker(building.coordinates, {
+        icon: L.divIcon({
+          html: markerEl,
+          className: isDestination ? 'destination-marker-container' : 'building-marker-container',
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+        }),
+        zIndexOffset: isDestination ? 999 : 0,
       }).addTo(map);
 
       const popupContent = `
@@ -138,6 +168,7 @@ const MapComponent = ({
       `;
 
       marker.bindPopup(popupContent);
+
       marker.on('click', () => {
         onMarkerClick(building.id);
         marker.openPopup();
@@ -204,74 +235,86 @@ const MapComponent = ({
     if (building) {
       try {
         map.flyTo(building.coordinates, 19, { duration: 0.8 });
-      } catch (err) { console.warn('flyTo failed', err); }
+      } catch (e) {}
     }
     if (marker) {
       marker.openPopup();
     }
-  }, [focusBuilding, buildings]);
+  }, [focusBuilding]);
 
-  // Update user location marker when location prop changes (from parent App)
+  // Location tracking logic (watchPosition, marker/circle management, rerouting)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
-    // Helper to create a pin SVG element for given color
-    const createPinDiv = (color) => {
-      const el = document.createElement('div');
-      el.innerHTML = `
-        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="18" r="6" fill="${color}"/>
-          <path d="M 20 40 L 14 24 L 26 24 Z" fill="${color}"/>
-          <circle cx="20" cy="18" r="3" fill="white"/>
-        </svg>
-      `;
-      return el;
+    // Helper to update marker/circle
+    const updateUserMarker = (lat, lng, accuracy) => {
+      if (userMarkerRef.current) {
+        try { map.removeLayer(userMarkerRef.current); } catch (e) {}
+        userMarkerRef.current = null;
+      }
+      if (accuracyCircleRef.current) {
+        try { map.removeLayer(accuracyCircleRef.current); } catch (e) {}
+        accuracyCircleRef.current = null;
+      }
+      if (lat && lng) {
+        accuracyCircleRef.current = L.circle([lat, lng], { radius: accuracy, color: '#2b6cb0', opacity: 0.25 }).addTo(map);
+        userMarkerRef.current = L.circleMarker([lat, lng], { radius: 8, fillOpacity: 0.95, color: '#2b6cb0', weight: 1 }).addTo(map);
+        userMarkerRef.current.bindPopup(`<strong>You are here</strong><br/>Lat: ${lat.toFixed(6)}<br/>Lng: ${lng.toFixed(6)}<br/>Accuracy: ${Math.round(accuracy)}m`).openPopup();
+      }
     };
 
-    // Clean up old markers
-    if (userMarkerRef.current) {
-      try { map.removeLayer(userMarkerRef.current); } catch (err) { console.warn('remove user marker failed', err); }
-      userMarkerRef.current = null;
-    }
-    if (accuracyCircleRef.current) {
-      try { map.removeLayer(accuracyCircleRef.current); } catch (err) { console.warn('remove accuracy circle failed', err); }
-      accuracyCircleRef.current = null;
-    }
+    // Start tracking
+    if (trackingActive && !watchId && navigator.geolocation) {
+      const id = navigator.geolocation.watchPosition(
+        pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const accuracy = pos.coords.accuracy || 0;
+          setUserLocation({ lat, lng, accuracy });
+          updateUserMarker(lat, lng, accuracy);
 
-    // Only render if tracking is active and we have location
-    if (isTracking && userLocation) {
-      const { lat, lng, accuracy } = userLocation;
-      
-      // Add accuracy circle
-      accuracyCircleRef.current = L.circle([lat, lng], { 
-        radius: accuracy, 
-        color: '#2b6cb0', 
-        opacity: 0.25 
-      }).addTo(map);
+          const newPos = L.latLng(lat, lng);
+          if (!lastTrackedPos) setLastTrackedPos(newPos);
 
-      // Add user location marker (blue pin)
-      const pinEl = createPinDiv('#3b82f6');
-      userMarkerRef.current = L.marker([lat, lng], {
-        icon: L.divIcon({
-          html: pinEl,
-          className: 'user-pin-container',
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-        }),
-        zIndexOffset: 1000,
-      }).addTo(map);
-
-      userMarkerRef.current.bindPopup(
-        `<strong>You are here</strong><br/>Lat: ${lat.toFixed(6)}<br/>Lng: ${lng.toFixed(6)}<br/>Accuracy: ${Math.round(accuracy)}m`
+          // Only reroute if moved significantly
+          if (currentRouteDest && lastTrackedPos && newPos.distanceTo(lastTrackedPos) >= REROUTE_THRESHOLD) {
+            setLastTrackedPos(newPos);
+            if (routerRef.current && typeof routerRef.current.setWaypoints === 'function') {
+              try {
+                routerRef.current.setWaypoints([newPos, L.latLng(currentRouteDest.lat, currentRouteDest.lng)]);
+              } catch (e) {
+                console.warn('Error updating route waypoints', e);
+              }
+            }
+          }
+        },
+        err => {
+          console.warn('watchPosition error', err);
+        },
+        { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
       );
-      userMarkerRef.current.openPopup();
+      setWatchId(id);
+    }
 
-      console.info(`User location displayed: [${lat.toFixed(6)}, ${lng.toFixed(6)}] ±${Math.round(accuracy)}m`);
-      // Auto-center map on user location to ensure it's visible even with poor GPS accuracy
-      map.setView([lat, lng], 18);
+    // Stop tracking
+    if (!trackingActive && watchId) {
+      try { navigator.geolocation.clearWatch(watchId); } catch (e) {}
+      setWatchId(null);
+      setLastTrackedPos(null);
+    }
+
+    // Clean up on unmount
+    return () => {
+      if (watchId) {
+        try { navigator.geolocation.clearWatch(watchId); } catch (e) {}
       }
-  }, [userLocation, isTracking]);
+    };
+  }, [trackingActive, watchId, currentRouteDest, lastTrackedPos]);
+
+  // Expose start/stop tracking for parent or UI button
+  // Example: <button onClick={() => setTrackingActive(true)}>Start Tracking</button>
+  // Example: <button onClick={() => setTrackingActive(false)}>Stop Tracking</button>
 
   // Show heading arrow when on journey
   useEffect(() => {
@@ -282,7 +325,7 @@ const MapComponent = ({
     if (headingMarkerRef.current) {
       try {
         map.removeLayer(headingMarkerRef.current);
-      } catch (err) { console.warn('remove heading marker failed', err); }
+      } catch (e) {}
       headingMarkerRef.current = null;
     }
 
@@ -322,42 +365,6 @@ const MapComponent = ({
       }).addTo(map);
     }
   }, [isOnJourney, journeyDestination, userLocation, buildings]);
-
-  // Render red pin for the current journey destination (only one)
-  useEffect(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-
-    // remove existing destination marker
-    if (destinationMarkerRef.current) {
-      try { map.removeLayer(destinationMarkerRef.current); } catch (err) { console.warn('remove destination marker failed', err); }
-      destinationMarkerRef.current = null;
-    }
-
-    if (journeyDestination) {
-      const destBuilding = buildings.find((b) => b.id === journeyDestination);
-      if (!destBuilding) return;
-
-      const pinEl = document.createElement('div');
-      pinEl.innerHTML = `
-        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="18" r="6" fill="#ef4444"/>
-          <path d="M 20 40 L 14 24 L 26 24 Z" fill="#ef4444"/>
-          <circle cx="20" cy="18" r="3" fill="white"/>
-        </svg>
-      `;
-
-      destinationMarkerRef.current = L.marker(destBuilding.coordinates, {
-        icon: L.divIcon({
-          html: pinEl,
-          className: 'destination-pin-container',
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-        }),
-        zIndexOffset: 1000,
-      }).addTo(map);
-    }
-  }, [journeyDestination, buildings]);
 
   return <div id="map" aria-label="Interactive campus map"></div>;
 };
