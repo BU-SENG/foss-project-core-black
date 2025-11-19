@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import '../styles/search.css';
 
+<<<<<<< HEAD
 /*
   SearchComponent
   - Lightweight, reusable search box for buildings.
@@ -13,6 +14,8 @@ import '../styles/search.css';
     - Supports keyboard navigation (ArrowUp/Down, Enter, Escape)
 */
 
+=======
+>>>>>>> main
 const SearchComponent = ({ buildings, onResultSelect, searchBuildings }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);

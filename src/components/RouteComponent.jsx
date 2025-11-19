@@ -1,5 +1,6 @@
 import '../styles/route.css';
 
+<<<<<<< HEAD
 /*
   RouteComponent
   - Displays route information, distance and estimated walking time.
@@ -7,6 +8,8 @@ import '../styles/route.css';
     clear the route or start/stop the guided journey.
   - This is a presentational component; it does not calculate routes.
 */
+=======
+>>>>>>> main
 const RouteComponent = ({ route, onClearRoute, isLoading, isTracking, userLocation, onStartJourney, onStopJourney, isOnJourney }) => {
   if (!route && !isLoading) return null;
 
