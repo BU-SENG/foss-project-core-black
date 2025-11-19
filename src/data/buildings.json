@@ -314,7 +314,6 @@
   "description": "Primary teaching hospital providing medical services, clinical training, and specialized healthcare.",
   "hours": "24/7",
   "rooms": ["Emergency Ward", "Outpatient Clinics", "Inpatient Wards", "Laboratories", "Pharmacy"]
-<<<<<<< HEAD
 },
   {
   "id": 36,
@@ -363,10 +362,3 @@
 }
   ]
 }
-=======
-}
-
-  ]
-}
-
->>>>>>> main

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 import '../styles/location-debug.css';
 
 const LocationDebugPanel = ({ userLocation, isTracking }) => {
@@ -102,7 +98,3 @@ const LocationDebugPanel = ({ userLocation, isTracking }) => {
 };
 
 export default LocationDebugPanel;
-<<<<<<< HEAD
-=======
-
->>>>>>> main

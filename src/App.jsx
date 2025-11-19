@@ -7,7 +7,6 @@ import LocationDebugPanel from './components/LocationDebugPanel';
 import buildingsData from './data/buildings.json';
 import './App.css';
 
-<<<<<<< HEAD
 /*
   App.jsx - Application root and state container
 
@@ -24,8 +23,6 @@ import './App.css';
     Its shape is [{ id, name, coordinates: [lat, lng], department, description, hours }, ...]
 */
 
-=======
->>>>>>> main
 function App() {
   const [selectedMarkers, setSelectedMarkers] = useState([]);
   const [route, setRoute] = useState(null);
@@ -57,10 +54,7 @@ function App() {
 
   // Get building by ID
   const getBuildingById = (id) => {
-<<<<<<< HEAD
     // Simple lookup helper used by multiple route-related routines
-=======
->>>>>>> main
     return buildingsData.buildings.find((b) => b.id === id);
   };
 
@@ -89,11 +83,8 @@ function App() {
         destination: buildingId
       }));
       setSelectedMarkers([routePoints.start, buildingId]);
-<<<<<<< HEAD
       // calculateRoute constructs a route object that MapComponent will
       // render. It uses building IDs and distance helpers below.
-=======
->>>>>>> main
       calculateRoute(routePoints.start, buildingId);
     }
   };
@@ -113,14 +104,9 @@ function App() {
         return;
       }
 
-<<<<<<< HEAD
       // Build a simple `route` object containing waypoints and helpers.
       // Note: MapComponent uses Leaflet Routing Machine (LRM) to draw the
       // route. Here we only prepare the data structure.
-=======
-      // Create a simple route path through waypoints
-      // In real implementation, Leaflet Routing Machine will handle this
->>>>>>> main
       const routePath = [startBuilding, destBuilding];
 
       setRoute({
@@ -206,11 +192,7 @@ function App() {
         setError('Could not calculate route from your location');
       }
       
-<<<<<<< HEAD
       // Also focus on the building in the map and clear any error state
-=======
-      // Also focus on the building
->>>>>>> main
       setFocusBuilding(building.id);
       setError(null);
     } else {
