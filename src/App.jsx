@@ -7,6 +7,22 @@ import LocationDebugPanel from './components/LocationDebugPanel';
 import buildingsData from './data/buildings.json';
 import './App.css';
 
+/*
+  App.jsx - Application root and state container
+
+  Responsibilities:
+  - Maintain app-level state: selected markers, route, user location, tracking
+    status, UI flags, and error messages.
+  - Provide handlers for geolocation permission, starting/stopping tracking,
+    and initiating route calculations.
+  - Render main UI: search, map, route panel and debug panel.
+
+  Notes for contributors:
+  - Keep heavy map side-effects inside `MapComponent.jsx` (presentation layer).
+  - `buildingsData` is a static JSON bundle in `src/data/buildings.json`.
+    Its shape is [{ id, name, coordinates: [lat, lng], department, description, hours }, ...]
+*/
+
 function App() {
   const [selectedMarkers, setSelectedMarkers] = useState([]);
   const [route, setRoute] = useState(null);
@@ -38,6 +54,7 @@ function App() {
 
   // Get building by ID
   const getBuildingById = (id) => {
+    // Simple lookup helper used by multiple route-related routines
     return buildingsData.buildings.find((b) => b.id === id);
   };
 
@@ -66,6 +83,8 @@ function App() {
         destination: buildingId
       }));
       setSelectedMarkers([routePoints.start, buildingId]);
+      // calculateRoute constructs a route object that MapComponent will
+      // render. It uses building IDs and distance helpers below.
       calculateRoute(routePoints.start, buildingId);
     }
   };
@@ -85,8 +104,9 @@ function App() {
         return;
       }
 
-      // Create a simple route path through waypoints
-      // In real implementation, Leaflet Routing Machine will handle this
+      // Build a simple `route` object containing waypoints and helpers.
+      // Note: MapComponent uses Leaflet Routing Machine (LRM) to draw the
+      // route. Here we only prepare the data structure.
       const routePath = [startBuilding, destBuilding];
 
       setRoute({
@@ -172,7 +192,7 @@ function App() {
         setError('Could not calculate route from your location');
       }
       
-      // Also focus on the building
+      // Also focus on the building in the map and clear any error state
       setFocusBuilding(building.id);
       setError(null);
     } else {

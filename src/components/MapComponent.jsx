@@ -1,7 +1,39 @@
 import { useEffect, useRef, useState } from "react";
+
+// When the tracked position moves by this many meters, the route will be
+// recalculated (or waypoints updated). Keep small for responsive updates,
+// but not too small to avoid thrashing on noisy GPS fixes.
 const REROUTE_THRESHOLD = 15; // meters to trigger reroute
+
 import L from "leaflet";
 import "../styles/map.css";
+
+/*
+ MapComponent
+ - Responsible for rendering the Leaflet map, building markers, user location
+   marker + accuracy circle, and drawing routes via Leaflet Routing Machine.
+ - This component is intentionally presentation-focused: parent components
+   (e.g. `App.jsx`) hold application state like `userLocation`, `isTracking`,
+   and route objects. MapComponent consumes that data and reflects it on the map.
+
+ Props:
+ - buildings: Array of building objects (see `src/data/buildings.json` for
+   schema) used to render markers and popups.
+ - markers: Array of building IDs that should be highlighted / treated as
+   selected destinations.
+ - onMarkerClick: Callback invoked when a building marker is clicked
+ - route: Route object with `path` (waypoints), `distance`, `time`, and
+   `fromUserLocation` (boolean). When present, the component will draw the
+   route using Leaflet Routing Machine.
+ - darkMode: boolean to switch tile layers
+ - focusBuilding: building id that should be zoomed to / opened
+ - isOnJourney / journeyDestination: used to show an on-map heading arrow
+
+ Notes for contributors:
+ - Keep map initialization and side-effects inside useEffect hooks.
+ - Avoid storing React state for things that belong on the map (use refs)
+   to prevent unnecessary re-renders.
+*/
 
 const MapComponent = ({
   buildings,
@@ -30,6 +62,8 @@ const MapComponent = ({
 
   // Dynamically load Leaflet Routing Machine
   useEffect(() => {
+    // Load the Leaflet Routing Machine script and stylesheet at runtime.
+    // We keep this lazy so the main map UI can render without blocking.
     if (!window.L?.Routing) {
       const script = document.createElement("script");
       script.src =
@@ -49,6 +83,9 @@ const MapComponent = ({
 
   // Initialize Map
   useEffect(() => {
+    // Create the Leaflet map instance once on mount. All DOM interactions
+    // (tile layer, controls, etc.) are performed against the `map` object
+    // stored in `mapInstanceRef` to avoid re-creating the map across renders.
     if (!mapInstanceRef.current) {
       const map = L.map('map', {
         center: [6.889149, 3.72005],
@@ -85,6 +122,9 @@ const MapComponent = ({
 
   // Respond to darkMode changes by swapping tile layer
   useEffect(() => {
+    // Swap base tile layer when `darkMode` changes. We remove the previous
+    // tile layer and add a new one. This keeps state minimal and avoids
+    // recreating the whole map.
     const map = mapInstanceRef.current;
     if (!map) return;
 
@@ -111,10 +151,14 @@ const MapComponent = ({
 
   // Add/update markers
   useEffect(() => {
+    // Render building markers (one per building). Markers are stored in
+    // `markersRef.current` so we can add/remove them without touching React
+    // state. `markers` prop is an array of highlighted building IDs.
     if (!mapInstanceRef.current) return;
 
     const map = mapInstanceRef.current;
 
+    // remove any previous markers and recreate from `buildings`
     Object.values(markersRef.current).forEach((m) => map.removeLayer(m));
     markersRef.current = {};
 
@@ -180,6 +224,10 @@ const MapComponent = ({
 
   // Draw Route
   useEffect(() => {
+    // When a `route` object is present, instantiate or update the
+    // Leaflet Routing Machine control. We remove the previous routing
+    // control (if any) before adding the new one so the map remains in
+    // a consistent state.
     if (!mapInstanceRef.current || !routingLoaded || !route) return;
 
     const map = mapInstanceRef.current;
@@ -219,6 +267,8 @@ const MapComponent = ({
 
   // Resize Handler
   useEffect(() => {
+    // Keep the map responsive to window resizes. Leaflet requires a call
+    // to `invalidateSize` when its container changes size.
     const fixLayout = () => {
       mapInstanceRef.current?.invalidateSize(true);
     };
@@ -228,6 +278,8 @@ const MapComponent = ({
 
   // Focus building when requested by parent (search auto-zoom)
   useEffect(() => {
+    // If the parent requests to focus a specific building (search result
+    // selection), center the map on it and open the popup.
     if (!focusBuilding || !mapInstanceRef.current) return;
     const marker = markersRef.current[focusBuilding];
     const map = mapInstanceRef.current;
@@ -244,6 +296,9 @@ const MapComponent = ({
 
   // Location tracking logic (watchPosition, marker/circle management, rerouting)
   useEffect(() => {
+    // This effect manages geolocation watch position updates and updates
+    // the map with a user marker + accuracy circle. It also performs a
+    // simple reroute when the user has moved enough (REROUTE_THRESHOLD).
     const map = mapInstanceRef.current;
     if (!map) return;
 
@@ -318,6 +373,9 @@ const MapComponent = ({
 
   // Show heading arrow when on journey
   useEffect(() => {
+    // Display a simple directional arrow at the user's location pointing
+    // towards `journeyDestination` while the journey is active. This is
+    // helpful when navigating on-foot.
     const map = mapInstanceRef.current;
     if (!map || !userLocation) return;
 

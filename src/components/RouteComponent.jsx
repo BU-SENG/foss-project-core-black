@@ -1,5 +1,12 @@
 import '../styles/route.css';
 
+/*
+  RouteComponent
+  - Displays route information, distance and estimated walking time.
+  - Accepts a `route` object (path, distance, time) and controls to
+    clear the route or start/stop the guided journey.
+  - This is a presentational component; it does not calculate routes.
+*/
 const RouteComponent = ({ route, onClearRoute, isLoading, isTracking, userLocation, onStartJourney, onStopJourney, isOnJourney }) => {
   if (!route && !isLoading) return null;
 

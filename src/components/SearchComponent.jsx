@@ -1,6 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import '../styles/search.css';
 
+/*
+  SearchComponent
+  - Lightweight, reusable search box for buildings.
+  - Props:
+    - `buildings`: array of building objects (id, name, department, description,...)
+    - `onResultSelect(building)`: callback when the user selects a building from results
+    - `searchBuildings(query)`: a search function provided by the parent for filtering
+  - Behavior:
+    - Shows a dropdown with results while typing
+    - Supports keyboard navigation (ArrowUp/Down, Enter, Escape)
+*/
+
 const SearchComponent = ({ buildings, onResultSelect, searchBuildings }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
